@@ -169,21 +169,28 @@ const ghosts = [
 
 //draw my ghost in my grid
 
-ghosts.forEach(ghost => squares[startIndex].classList.add(ghost.className));
+ghosts.forEach(ghost => squares[ghost.startIndex].classList.add(ghost.className));
 
 //move the ghost
 
 ghosts.forEach(ghost => moveGhost(ghost))
 
-function moveGhost() {
+function moveGhost(ghost) {
     const directions = [];
     const direction = directions[Math.floor(Math.random() * directions.length)];
-    console.log(direction);
+    // console.log(direction);
 
 
-    Ghost.timerId = setInterval(function() {
+    ghost.timerId = setInterval(function() {
 
         //all my code
+        //remove host
+        squares[ghost.currentIndex].classList.remove(ghost.className);
+        //add direction to current index
+        ghost.currentIndex += direction;
+        //add ghost again
+        squares[ghost.currentIndex].classList.add(ghost.className);
 
-    }, Ghost.speed)
+
+    }, ghost.speed)
 }
