@@ -139,6 +139,8 @@ function control(e) {
                     squares[pacmanCurrentIndex].classList.add('pacman')
                     pacDotEaten()
                     powerPelletEaten()
+                    checkForWin() 
+                    gameOver()
         }
 document.addEventListener('keyup', control);
 
@@ -236,6 +238,32 @@ function moveGhost(ghost) {
                    //re-add classnames of ghost.className and 'ghost' to the ghosts new postion 
                    squares[ghost.currentIndex].classList.add(ghost.className, 'ghost')
         }
-
+        gameOver()
     }, ghost.speed)
+}
+
+//check for gameover 
+function gameOver() {
+     //if the square pacman is in contains a ghost AND the square does NOT contain a scared ghost 
+     if(
+         squares[pacmanCurrentIndex].classList.contains('ghost') 
+         && 
+         !squares[pacmanCurrentIndex].classList.contains('scared-ghost')) {
+              //for each ghost - we need to stop it moving
+              ghosts.forEach(ghost => clearInterval(ghost.timerId))
+                //remove eventlistener from our control function
+                document.removeEventListener('keyup', control)
+                 //tell user the game is over   
+                 scoreDisplay.textContent = 'You lose!!'
+
+     }
+}
+
+//check for a win
+function checkForWin() {
+    if(score === 274) {
+        ghosts.forEach(ghost => clearInterval(ghost.timerId))
+        document.removeEventListener('keyup', control)
+        scoreDisplay.textContent = 'You Won!!!'
+    }
 }
